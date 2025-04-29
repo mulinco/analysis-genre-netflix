@@ -17,7 +17,7 @@ st.title("📊 Análise de Gêneros de Filmes/Séries")
 @st.cache_data
 def load_data():
     try:
-        file_path = os.path.abspath('C:/Users/mulin/OneDrive/Documentos/analysis-genre-netflix/data/processed/data_tratada.csv')
+        file_path = os.path.abspath('data/processed/data_tratada.csv')
         st.write(f"Carregando dados de: {file_path}")
         
         if not os.path.exists(file_path):
