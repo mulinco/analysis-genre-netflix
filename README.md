@@ -34,21 +34,18 @@ pip install -r requirements.txt
 # Execute o dashboard
 streamlit run app.py
 
-## 📚 Meu Processo de Aprendizado
+📚 Meu Processo de Aprendizado
 
-| Habilidade Biológica     | Equivalente em Dados   | O Que Aprendi                          |
-|--------------------------|------------------------|----------------------------------------|
-| Análise de sequências    | Processamento de texto | Padronizar gêneros como faço com genes |
-| Alinhamento múltiplo     | Data cleaning          | Identificar e tratar "mutações" nos dados |
-| Árvores filogenéticas    | Clusterização          | Agrupar gêneros relacionados           |
+Habilidade Biológica	Equivalente em Dados	O Que Aprendi
+Análise de sequências	Processamento de texto	Padronizar gêneros como faço com genes
+Alinhamento múltiplo	Data cleaning	Identificar e tratar "mutações" nos dados
+Árvores filogenéticas	Clusterização	Agrupar gêneros relacionados
+🤝 Como Você Pode Me Ajudar
+<div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin: 20px 0;"> Como alguém em transição de carreira, adoraria:
+✏️ Feedback sobre minha abordagem analítica
 
-## 🤝 Como Você Pode Me Ajudar
-<div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin: 20px 0;">
-Como alguém em transição de carreira, adoraria:
+💻 Sugestões para melhorar o código
 
-- ✏️ Feedback sobre minha abordagem analítica
-- 💻 Sugestões para melhorar o código
-- 🔗 Conexões com oportunidades em análise de dados
-</div>
-**Vamos conversar!**  
-[mariarodrigues.ufrj@gmail.com](mailto:mariarodrigues.ufrj@gmail.com) | [Meu LinkedIn](https://linkedin.com/in/mariaclararodrigues3113)
+🔗 Conexões com oportunidades em análise de dados
+
+</div> **Vamos conversar!** [mariarodrigues.ufrj@gmail.com](mailto:mariarodrigues.ufrj@gmail.com) | [Meu LinkedIn](https://linkedin.com/in/mariaclararodrigues3113) ```
