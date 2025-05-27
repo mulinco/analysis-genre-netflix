@@ -18,7 +18,7 @@ def load_data(file_path):
         df = pd.read_csv(file_path, encoding='utf-8-sig')
         print(f"\nDados carregados: {len(df):,} registros")
         
-        # Verificação de colunas essenciais
+        
         required_cols = {'title', 'type', 'genres', 'releaseYear', 'imdbAverageRating', 'imdbNumVotes'}
         missing_cols = required_cols - set(df.columns)
         if missing_cols:
@@ -46,11 +46,11 @@ def preprocess_data(df):
     df['imdbAverageRating'] = pd.to_numeric(df['imdbAverageRating'], errors='coerce')
     df['imdbNumVotes'] = pd.to_numeric(df['imdbNumVotes'], errors='coerce')
     
-    # Preencher valores nulos
+    
     df['releaseYear'] = df['releaseYear'].fillna(df['releaseYear'].median()).astype(int)
     df['genres'] = df['genres'].fillna('Unknown')
     
-    # Limpar gêneros
+   
     df['genres'] = df['genres'].apply(clean_genres)
     
     # Aplicar KNN para avaliações
@@ -68,19 +68,19 @@ def apply_filters(df, filters):
     print("\n=== DIAGNÓSTICO DOS FILTROS ===")
     print(f"Registros iniciais: {len(filtered_df):,}")
     
-    # Filtro de ano
+    
     if 'years' in filters:
         year_min, year_max = filters['years']
         filtered_df = filtered_df[filtered_df['releaseYear'].between(year_min, year_max)]
         print(f"Após filtrar anos ({year_min}-{year_max}): {len(filtered_df):,}")
     
-    # Filtro de avaliação
+    
     if 'rating_range' in filters:
         rating_min, rating_max = filters['rating_range']
         filtered_df = filtered_df[filtered_df['imdbAverageRating'].between(rating_min, rating_max)]
         print(f"Após filtrar avaliações ({rating_min}-{rating_max}): {len(filtered_df):,}")
     
-    # Filtro de tipo
+    
     if 'type' in filters:
         if filters['type'] != 'Todos':
             before = len(filtered_df)
@@ -89,7 +89,7 @@ def apply_filters(df, filters):
         else:
             print("Nenhum filtro de tipo aplicado ('Todos' selecionado)")
     
-    # Filtro de gêneros
+    
     if 'genres' in filters and filters['genres']:
         genre_pattern = '|'.join([re.escape(g) for g in filters['genres']])
         filtered_df = filtered_df[filtered_df['genres'].str.contains(genre_pattern, na=False, regex=True)]
@@ -107,7 +107,7 @@ def generate_visualizations(filtered_df, output_dir='output'):
         return
     
     try:
-        # Gráfico 1: Top gêneros (limpos e consolidados)
+        # Gráfico 1: Top gêneros 
         plt.figure()
         genre_counts = (filtered_df['genres'].str.split(',')
                        .explode()
@@ -124,7 +124,7 @@ def generate_visualizations(filtered_df, output_dir='output'):
         plt.savefig(f"{output_dir}/top_generos.png", dpi=300)
         plt.close()
         
-        # Gráfico 2: Distribuição de avaliações para o gênero mais popular
+        # Distribuição de avaliações para o gênero mais popular
         plt.figure()
         most_popular_genre = genre_counts.iloc[0]['Gênero']
         sns.histplot(
@@ -138,7 +138,7 @@ def generate_visualizations(filtered_df, output_dir='output'):
         plt.savefig(f"{output_dir}/distribuicao_avaliacoes.png", dpi=300)
         plt.close()
         
-        # Gráfico 3: Evolução temporal
+        #  Evolução temporal
         if filtered_df['releaseYear'].nunique() > 1:
             plt.figure()
             sns.lineplot(
@@ -169,7 +169,7 @@ def analyze_data(df, filters=None):
             'genres': ['Action', 'Adventure', 'Comedy']
         }
     
-    # Aplicar filtros
+   
     filtered_df = apply_filters(df, filters)
     
     if filtered_df.empty:
@@ -184,7 +184,7 @@ def analyze_data(df, filters=None):
         print("\nExemplo de gêneros:", df['genres'].str.split(',').explode().value_counts().head(10).to_dict())
         return
     
-    # Métricas
+    
     metrics = {
         'total': len(filtered_df),
         'avg_rating': filtered_df['imdbAverageRating'].mean(),
@@ -198,17 +198,17 @@ def analyze_data(df, filters=None):
     print(f"Votos totais: {metrics['total_votes']:,.0f}")
     print(f"Ano médio: {int(metrics['avg_year'])}")
     
-    # Visualizações
+    
     generate_visualizations(filtered_df)
 
 def main():
     print("=== ANÁLISE DE CATÁLOGO NETFLIX ===")
     
-    # Configuração
+    
     DATA_PATH = 'C:/Users/mulin/OneDrive/Documentos/analysis-genre-netflix/data/processed/data_tratada.csv'  # Caminho relativo para GitHub
     OUTPUT_DIR = 'output'
     
-    # Carregar dados
+    
     df = load_data(DATA_PATH)
     if df is None:
         return
@@ -216,7 +216,7 @@ def main():
     # Pré-processamento
     df = preprocess_data(df)
     
-    # Filtros padrão (podem ser modificados)
+    # Filtros padrão 
     my_filters = {
         'years': (2000, 2023),      # Intervalo de anos
         'rating_range': (6.0, 10.0), # Avaliação mínima e máxima
