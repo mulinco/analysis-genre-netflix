@@ -8,10 +8,7 @@ import os
 import re
 from collections import defaultdict
 
-
 st.set_page_config(layout="wide", page_title="Análise de Gêneros Netflix", page_icon="🎬")
-
-
 st.title("📊 Análise de Gêneros de Filmes/Séries")
 
 @st.cache_data
@@ -26,18 +23,15 @@ def load_data():
             
         df = pd.read_csv(file_path, encoding='utf-8-sig')
         
-        
         required_columns = {'imdbAverageRating', 'imdbNumVotes', 'genres', 'releaseYear', 'type'}
         if not required_columns.issubset(df.columns):
             missing = required_columns - set(df.columns)
             st.error(f"Colunas faltantes: {missing}")
             return None
         
-        
         df['genres'] = df['genres'].apply(clean_and_standardize_genres)
-            
         return df
-        
+
     except Exception as e:
         st.error(f"Erro ao carregar dados: {str(e)}")
         return None
@@ -46,7 +40,6 @@ def clean_and_standardize_genres(genres_str):
     """Padroniza os gêneros e consolida duplicados"""
     if pd.isna(genres_str):
         return ''
-    
     
     genre_mapping = {
         'reality-tv': 'reality',
@@ -61,16 +54,16 @@ def clean_and_standardize_genres(genres_str):
         'talk-show': 'talk show',
         'game-show': 'game show'
     }
-    
+
     genres = [g.strip().lower() for g in str(genres_str).split(',')]
     cleaned_genres = []
-    
+
     for genre in genres:
         standardized = genre_mapping.get(genre, genre)
         cleaned = re.sub(r'[^\w\s-]', '', standardized).strip()
-        if cleaned and cleaned not in cleaned_genres:
+        if cleaned not in cleaned_genres:
             cleaned_genres.append(cleaned)
-    
+
     return ','.join(sorted([g.title() for g in cleaned_genres]))
 
 def get_unique_genres(df):
@@ -115,7 +108,7 @@ if df is not None:
 
     
     st.subheader("📈 Métricas Gerais")
-    col1, col2, col3, col4, col5, col6 = st.columns(6)
+    col1, col2, col3, col4, col5 = st.columns(5)
     with col1:
         st.metric("Total de Títulos", len(filtered_df))
     with col2:
@@ -123,10 +116,8 @@ if df is not None:
     with col3:
         st.metric("Total de Votos", f"{filtered_df['imdbNumVotes'].sum():,}")
     with col4:
-        st.metric("Ano Médio", int(filtered_df['releaseYear'].mean()))
-    with col5:
         st.metric("Média de Votos/Título", f"{filtered_df['imdbNumVotes'].mean():.0f}")
-    with col6:
+    with col5:
         st.metric("Desvio das Notas", f"{filtered_df['imdbAverageRating'].std():.2f}")
 
     
@@ -175,7 +166,7 @@ Por fim, integrei as análises em um dashboard interativo usando o Streamlit. El
 #### 💡 Principais Insights
 - O gênero **Drama** é o mais comum.
 - Documentários tendem a ter notas **IMDb mais altas**.
-- Houve um **aumento expressivo** de lançamentos em 2019.
+
 
 ---
 
@@ -264,55 +255,54 @@ Por fim, integrei as análises em um dashboard interativo usando o Streamlit. El
             st.info("Selecione ao menos um gênero para visualizar a comparação.")
 
     
-
     with tab3:
-        st.subheader("Evolução Temporal das Avaliações")
-        fig, ax = plt.subplots(figsize=(12, 6))
-        sns.lineplot(
-            data=filtered_df,
-            x='releaseYear',
-            y='imdbAverageRating',
-            estimator='mean',
-            errorbar=None,
-            color='royalblue',
-            linewidth=2
-        )
-        plt.title("Média de Avaliações por Ano")
-        plt.xlabel("Ano de Lançamento")
-        plt.ylabel("Avaliação Média IMDb")
-        st.pyplot(fig)
-        st.subheader("Evolução Temporal das Avaliações")
+     st.subheader("Evolução Temporal das Avaliações")
 
-         
-        min_year, max_year = int(filtered_df['releaseYear'].min()), int(filtered_df['releaseYear'].max())
-    
-    
-        selected_years = st.slider("Selecione o intervalo de anos:", 
-                               min_year, max_year, 
-                               (min_year, max_year),
-                               key="year_slider")  # A chave "year_slider" é única
-
-    
-        filtered_by_year = filtered_df[filtered_df['releaseYear'].between(*selected_years)]
-
-    
-        st.subheader("Quantidade de Lançamentos por Ano")
-        year_counts = filtered_by_year['releaseYear'].value_counts().sort_index()
-
-   
-        fig, ax = plt.subplots(figsize=(12, 6))
-        sns.histplot(
-        year_counts,
-        bins=len(year_counts),
-        kde=False,
-        color='lightblue',
-        ax=ax
+    # Slider de intervalo de anos
+    min_year, max_year = int(filtered_df['releaseYear'].min()), int(filtered_df['releaseYear'].max())
+    selected_years = st.slider(
+        "Selecione o intervalo de anos:", 
+        min_year, max_year, 
+        (min_year, max_year),
+        key="year_slider"
     )
-        ax.set_xlabel("Ano de Lançamento")
-        ax.set_ylabel("Quantidade de Títulos")
-        ax.set_title("Número de Lançamentos por Ano")
-        plt.xticks(rotation=45)
-        st.pyplot(fig)
+
+    # Filtrando o dataframe com base no intervalo
+    filtered_by_year = filtered_df[filtered_df['releaseYear'].between(*selected_years)]
+
+    # Gráfico de linha - Média de avaliações por ano
+    fig1, ax1 = plt.subplots(figsize=(12, 6))
+    sns.lineplot(
+        data=filtered_by_year,
+        x='releaseYear',
+        y='imdbAverageRating',
+        estimator='mean',
+        errorbar=None,
+        color='royalblue',
+        linewidth=2,
+        ax=ax1
+    )
+    ax1.set_title("Média de Avaliações por Ano")
+    ax1.set_xlabel("Ano de Lançamento")
+    ax1.set_ylabel("Avaliação Média IMDb")
+    st.pyplot(fig1)
+
+    # Gráfico de barras - Quantidade de lançamentos por ano
+    st.subheader("Quantidade de Lançamentos por Ano")
+    year_counts = filtered_by_year['releaseYear'].value_counts().sort_index()
+
+    fig2, ax2 = plt.subplots(figsize=(12, 6))
+    sns.barplot(
+        x=year_counts.index,
+        y=year_counts.values,
+        color='lightblue',
+        ax=ax2
+    )
+    ax2.set_xlabel("Ano de Lançamento")
+    ax2.set_ylabel("Quantidade de Títulos")
+    ax2.set_title("Número de Lançamentos por Ano")
+    plt.xticks(rotation=45)
+    st.pyplot(fig2)
 
     with tab4:
     
@@ -347,6 +337,5 @@ Se quiser trocar ideia ou acompanhar meus projetos, tô por aqui:
 
 
     
-
 else:
-    st.warning("Não foi possível carregar os dados. Verifique o caminho do arquivo e tente novamente.") 
+  st.warning("Não foi possível carregar os dados. Verifique o caminho do arquivo e tente novamente.")
