@@ -48,4 +48,4 @@ Como alguém em transição de carreira, adoraria:
 
 🔗 Conexões com oportunidades em análise de dados
 
-**Vamos conversar!** [mariarodrigues.ufrj@gmail.com](mailto:mariarodrigues.ufrj@gmail.com) | [Meu LinkedIn](https://linkedin.com/in/mariaclararodrigues3113) ```
+Vamos conversar! [mariarodrigues.ufrj@gmail.com](mailto:mariarodrigues.ufrj@gmail.com) | [Meu LinkedIn](https://linkedin.com/in/mariaclararodrigues3113) 
