@@ -8,16 +8,16 @@ import os
 import re
 from collections import defaultdict
 
-# Configurações iniciais
+
 st.set_page_config(layout="wide", page_title="Análise de Gêneros Netflix", page_icon="🎬")
 
 
 st.title("📊 Análise de Gêneros de Filmes/Séries")
-# 1. Carregamento de Dados com Verificação
+
 @st.cache_data
 def load_data():
     try:
-        file_path = os.path.abspath('data/processed/data_tratada.csv')
+        file_path = os.path.abspath('C:/Users/mulin/OneDrive/Documentos/analysis-genre-netflix/data/processed/data_tratada.csv')
         st.write(f"Carregando dados de: {file_path}")
         
         if not os.path.exists(file_path):
@@ -26,14 +26,14 @@ def load_data():
             
         df = pd.read_csv(file_path, encoding='utf-8-sig')
         
-        # Verificação crítica das colunas necessárias
+        
         required_columns = {'imdbAverageRating', 'imdbNumVotes', 'genres', 'releaseYear', 'type'}
         if not required_columns.issubset(df.columns):
             missing = required_columns - set(df.columns)
             st.error(f"Colunas faltantes: {missing}")
             return None
         
-        # Pré-processamento dos gêneros com tratamento especial para duplicados
+        
         df['genres'] = df['genres'].apply(clean_and_standardize_genres)
             
         return df
@@ -47,7 +47,7 @@ def clean_and_standardize_genres(genres_str):
     if pd.isna(genres_str):
         return ''
     
-    # Mapeamento de gêneros similares
+    
     genre_mapping = {
         'reality-tv': 'reality',
         'sci-fi': 'science fiction',
@@ -81,11 +81,10 @@ def get_unique_genres(df):
             all_genres.update([g.strip() for g in genres if g.strip()])
     return sorted(all_genres)
 
-# Carregar os dados
+
 df = load_data()
 
 if df is not None:
-    # 2. Sidebar com Filtros Avançados
     with st.sidebar:
         st.header("🔍 Filtros Interativos")
         
@@ -101,7 +100,7 @@ if df is not None:
         min_rating, max_rating = float(df['imdbAverageRating'].min()), float(df['imdbAverageRating'].max())
         rating_range = st.slider("Filtrar por avaliação IMDb:", min_rating, max_rating, (6.0, 9.0))
 
-    # 3. Aplicar Filtros
+    
     filtered_df = df[
         (df['releaseYear'].between(*selected_years)) &
         (df['imdbAverageRating'].between(*rating_range))
@@ -114,7 +113,7 @@ if df is not None:
         genre_pattern = '|'.join([re.escape(g) for g in selected_genres])
         filtered_df = filtered_df[filtered_df['genres'].str.contains(genre_pattern, na=False, regex=True)]
 
-    # 4. Métricas Principais
+    
     st.subheader("📈 Métricas Gerais")
     col1, col2, col3, col4, col5, col6 = st.columns(6)
     with col1:
@@ -130,7 +129,7 @@ if df is not None:
     with col6:
         st.metric("Desvio das Notas", f"{filtered_df['imdbAverageRating'].std():.2f}")
 
-    # 5. Visualizações Interativas
+    
     tab0, tab1, tab2, tab3, tab4, tab5 = st.tabs(["📚Introdução", "📊 Popularidade", "🎭 Distribuição", "📅 Evolução Temporal", "📎Dados Filtrados", "👩‍💻Sobre Mim"])
     
     with tab0:
@@ -197,7 +196,7 @@ Por fim, integrei as análises em um dashboard interativo usando o Streamlit. El
         
         fig, ax = plt.subplots(figsize=(10, 6))
         sns.barplot(data=genre_counts, x='Contagem', y='Gênero', palette="viridis", ax=ax)
-        plt.title("Gêneros Mais Frequentes (Consolidados)")
+        plt.title("Gêneros Mais Frequentes")
         plt.xlabel("Contagem")
         plt.ylabel("Gênero")
         st.pyplot(fig)
@@ -231,27 +230,27 @@ Por fim, integrei as análises em um dashboard interativo usando o Streamlit. El
             .head(10)
         )
 
-        st.subheader("Comparação: Nota Média por Gênero e Tipo (Interativa)")
+        st.subheader("Comparação: Nota Média por Gênero e Tipo")
 
-        # Explode os gêneros para separar múltiplos por linha
+        
         exploded_df = filtered_df.copy()
         exploded_df = exploded_df.assign(genero=exploded_df['genres'].str.split(',')).explode('genero')
         exploded_df['genero'] = exploded_df['genero'].str.strip()
 
-        # Gêneros únicos para escolha
+        
         generos_disponiveis = sorted(exploded_df['genero'].unique())
 
-        # Filtro interativo de gêneros
+        
         generos_selecionados = st.multiselect(
             "Escolha os gêneros para comparar:",
             options=generos_disponiveis,
             default=['Drama', 'Comedy']
         )
 
-        # Filtra os dados para os gêneros selecionados
+       
         df_filtrado_generos = exploded_df[exploded_df['genero'].isin(generos_selecionados)]
 
-        # Agrupa e plota
+        
         if not df_filtrado_generos.empty:
             media_genero_tipo = df_filtrado_generos.groupby(['genero', 'type'])['imdbAverageRating'].mean().reset_index()
 
@@ -284,23 +283,23 @@ Por fim, integrei as análises em um dashboard interativo usando o Streamlit. El
         st.pyplot(fig)
         st.subheader("Evolução Temporal das Avaliações")
 
-         # Filtro interativo de intervalo de anos
+         
         min_year, max_year = int(filtered_df['releaseYear'].min()), int(filtered_df['releaseYear'].max())
     
-    # Apenas um slider com a chave única
+    
         selected_years = st.slider("Selecione o intervalo de anos:", 
                                min_year, max_year, 
                                (min_year, max_year),
                                key="year_slider")  # A chave "year_slider" é única
 
-    # Filtrar os dados de acordo com o intervalo de anos
+    
         filtered_by_year = filtered_df[filtered_df['releaseYear'].between(*selected_years)]
 
-    # Plotando a quantidade de lançamentos por ano
+    
         st.subheader("Quantidade de Lançamentos por Ano")
         year_counts = filtered_by_year['releaseYear'].value_counts().sort_index()
 
-    # Usar o histplot para mostrar a quantidade de lançamentos por ano
+   
         fig, ax = plt.subplots(figsize=(12, 6))
         sns.histplot(
         year_counts,
@@ -316,7 +315,7 @@ Por fim, integrei as análises em um dashboard interativo usando o Streamlit. El
         st.pyplot(fig)
 
     with tab4:
-        #  Tabela Interativa
+    
         st.subheader("📋 Dados Filtrados")
         st.dataframe(
         filtered_df.sort_values('imdbAverageRating', ascending=False),
@@ -324,7 +323,7 @@ Por fim, integrei as análises em um dashboard interativo usando o Streamlit. El
         use_container_width=True
     )
     
-    #  Download dos Dados Filtrados
+    
         st.download_button(
         label="📥 Baixar Dados Filtrados (CSV)",
         data=filtered_df.to_csv(index=False).encode('utf-8'),
@@ -350,6 +349,4 @@ Se quiser trocar ideia ou acompanhar meus projetos, tô por aqui:
     
 
 else:
-    st.warning("Não foi possível carregar os dados. Verifique o caminho do arquivo e tente novamente.")
-
-
+    st.warning("Não foi possível carregar os dados. Verifique o caminho do arquivo e tente novamente.") 
