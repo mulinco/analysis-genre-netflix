@@ -37,10 +37,11 @@ streamlit run app.py
 
 ## 📚 Meu Processo de Aprendizado
 
-Habilidade Biológica	Equivalente em Dados	O Que Aprendi
-Análise de sequências	Processamento de texto	Padronizar gêneros como faço com genes
-Alinhamento múltiplo	Data cleaning	Identificar e tratar "mutações" nos dados
-Árvores filogenéticas	Clusterização	Agrupar gêneros relacionados
+| Habilidade Biológica    | Equivalente em Dados   | O Que Aprendi                                      |
+|-------------------------|------------------------|----------------------------------------------------|
+| Análise de sequências   | Processamento de texto | Padronizar gêneros como faço com genes             |
+| Alinhamento múltiplo    | Data cleaning           | Identificar e tratar "mutações" nos dados          |
+| Árvores filogenéticas   | Clusterização           | Agrupar gêneros relacionados                       |
 
 ## 🤝 Como Você Pode Me Ajudar
 
