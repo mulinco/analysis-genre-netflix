@@ -31,7 +31,7 @@ O diagrama abaixo resume o fluxo de dados e a arquitetura modular deste projeto:
 - 🎨 **style.css** e **config.toml**: personalizam o layout e comportamento do aplicativo Streamlit.
 - 🧩 **Visualization Engine**: gera os gráficos interativos exibidos ao usuário.
 - 🌐 **Client Browser**: é onde o usuário interage com o app, visualizando as análises diretamente no navegador.
-- 📚 **requirements.txt** e demais documentos**: listam as dependências e informações adicionais sobre o projeto.
+- 📚 **requirements.txt** e demais documentos: listam as dependências e informações adicionais sobre o projeto.
 
 ![Diagrama da Arquitetura do Projeto](figures/architecture-diagram.png)
 
