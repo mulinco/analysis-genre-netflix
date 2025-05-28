@@ -13,7 +13,7 @@ plt.rcParams['figure.figsize'] = (12, 6)
 plt.rcParams['font.size'] = 12
 
 def load_data(file_path):
-    """Carrega os dados com tratamento robusto"""
+    """Carrega os dados com tratamento"""
     try:
         df = pd.read_csv(file_path, encoding='utf-8-sig')
         print(f"\nDados carregados: {len(df):,} registros")
@@ -40,7 +40,6 @@ def clean_genres(genres_str):
     return ','.join(sorted(list(set(cleaned))))
 
 def preprocess_data(df):
-    """Pré-processamento dos dados"""
     # Converter tipos
     df['releaseYear'] = pd.to_numeric(df['releaseYear'], errors='coerce')
     df['imdbAverageRating'] = pd.to_numeric(df['imdbAverageRating'], errors='coerce')
