@@ -33,14 +33,16 @@ pip install -r requirements.txt
 
 # Execute o dashboard
 streamlit run app.py
+```
 
-📚 Meu Processo de Aprendizado
+## 📚 Meu Processo de Aprendizado
 
 Habilidade Biológica	Equivalente em Dados	O Que Aprendi
 Análise de sequências	Processamento de texto	Padronizar gêneros como faço com genes
 Alinhamento múltiplo	Data cleaning	Identificar e tratar "mutações" nos dados
 Árvores filogenéticas	Clusterização	Agrupar gêneros relacionados
-🤝 Como Você Pode Me Ajudar
+
+## 🤝 Como Você Pode Me Ajudar
 
 Como alguém em transição de carreira, adoraria:
 
@@ -49,7 +51,7 @@ Como alguém em transição de carreira, adoraria:
 💻 Sugestões para melhorar o código
 
 🔗 Conexões com oportunidades em análise de dados
-```
+
 
 Vamos conversar! [mariarodrigues.ufrj@gmail.com](mailto:mariarodrigues.ufrj@gmail.com) | [Meu LinkedIn](https://linkedin.com/in/mariaclararodrigues3113) 
 
