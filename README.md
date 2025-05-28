@@ -41,12 +41,16 @@ Análise de sequências	Processamento de texto	Padronizar gêneros como faço co
 Alinhamento múltiplo	Data cleaning	Identificar e tratar "mutações" nos dados
 Árvores filogenéticas	Clusterização	Agrupar gêneros relacionados
 🤝 Como Você Pode Me Ajudar
+
 Como alguém em transição de carreira, adoraria:
+
 ✏️ Feedback sobre minha abordagem analítica
 
 💻 Sugestões para melhorar o código
 
 🔗 Conexões com oportunidades em análise de dados
+```
 
 Vamos conversar! [mariarodrigues.ufrj@gmail.com](mailto:mariarodrigues.ufrj@gmail.com) | [Meu LinkedIn](https://linkedin.com/in/mariaclararodrigues3113) 
-```
+
+
