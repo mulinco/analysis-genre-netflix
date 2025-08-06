@@ -8,6 +8,9 @@ import os
 import re
 from collections import defaultdict
 
+#ajeitar grafico de numero de lançamento por ano
+#  
+
 st.set_page_config(layout="wide", page_title="Análise de Gêneros Netflix", page_icon="🎬")
 st.title("📊 Análise de Gêneros de Filmes/Séries")
 
@@ -256,53 +259,62 @@ Por fim, integrei as análises em um dashboard interativo usando o Streamlit. El
 
     
     with tab3:
-     st.subheader("Evolução Temporal das Avaliações")
+        st.subheader("Evolução Temporal das Avaliações")
 
-    # Slider de intervalo de anos
-    min_year, max_year = int(filtered_df['releaseYear'].min()), int(filtered_df['releaseYear'].max())
-    selected_years = st.slider(
-        "Selecione o intervalo de anos:", 
-        min_year, max_year, 
-        (min_year, max_year),
-        key="year_slider"
-    )
+        # Slider de intervalo de anos
+        min_year, max_year = int(filtered_df['releaseYear'].min()), int(filtered_df['releaseYear'].max())
+        
+        # Dica: É uma boa prática usar uma chave (key) única para cada widget.
+        selected_years = st.slider(
+            "Selecione o intervalo de anos:", 
+            min_year, max_year, 
+            (min_year, max_year),
+            key="year_slider_tab3"  # Chave única para este slider
+        )
 
-    # Filtrando o dataframe com base no intervalo
-    filtered_by_year = filtered_df[filtered_df['releaseYear'].between(*selected_years)]
+        # Filtrando o dataframe com base no intervalo
+        filtered_by_year = filtered_df[filtered_df['releaseYear'].between(*selected_years)]
 
-    # Gráfico de linha - Média de avaliações por ano
-    fig1, ax1 = plt.subplots(figsize=(12, 6))
-    sns.lineplot(
-        data=filtered_by_year,
-        x='releaseYear',
-        y='imdbAverageRating',
-        estimator='mean',
-        errorbar=None,
-        color='royalblue',
-        linewidth=2,
-        ax=ax1
-    )
-    ax1.set_title("Média de Avaliações por Ano")
-    ax1.set_xlabel("Ano de Lançamento")
-    ax1.set_ylabel("Avaliação Média IMDb")
-    st.pyplot(fig1)
+        # Gráfico de linha - Média de avaliações por ano
+        st.subheader("Média de Avaliações por Ano")
+        fig1, ax1 = plt.subplots(figsize=(12, 6))
+        sns.lineplot(
+            data=filtered_by_year,
+            x='releaseYear',
+            y='imdbAverageRating',
+            estimator='mean',
+            errorbar=None,
+            color='royalblue',
+            linewidth=2,
+            ax=ax1
+        )
+        ax1.set_title("Média de Avaliações por Ano de Lançamento")
+        ax1.set_xlabel("Ano de Lançamento")
+        ax1.set_ylabel("Avaliação Média IMDb")
+        st.pyplot(fig1)
+        plt.close(fig1) # Boa prática: fechar a figura para liberar memória
 
-    # Gráfico de barras - Quantidade de lançamentos por ano
-    st.subheader("Quantidade de Lançamentos por Ano")
-    year_counts = filtered_by_year['releaseYear'].value_counts().sort_index()
+        # Gráfico de barras - Quantidade de lançamentos por ano
+        st.subheader("Quantidade de Lançamentos por Ano")
+        
+        if not filtered_by_year.empty:
+            year_counts = filtered_by_year['releaseYear'].value_counts().sort_index()
 
-    fig2, ax2 = plt.subplots(figsize=(12, 6))
-    sns.barplot(
-        x=year_counts.index,
-        y=year_counts.values,
-        color='lightblue',
-        ax=ax2
-    )
-    ax2.set_xlabel("Ano de Lançamento")
-    ax2.set_ylabel("Quantidade de Títulos")
-    ax2.set_title("Número de Lançamentos por Ano")
-    plt.xticks(rotation=45)
-    st.pyplot(fig2)
+            fig2, ax2 = plt.subplots(figsize=(12, 6))
+            sns.barplot(
+                x=year_counts.index,
+                y=year_counts.values,
+                color='lightblue',
+                ax=ax2
+            )
+            ax2.set_xlabel("Ano de Lançamento")
+            ax2.set_ylabel("Quantidade de Títulos")
+            ax2.set_title("Número de Lançamentos por Ano")
+            plt.xticks(rotation=45)
+            st.pyplot(fig2)
+            plt.close(fig2) # Boa prática: fechar a figura para liberar memória
+        else:
+            st.info("Nenhum dado encontrado para o intervalo de anos selecionado.")
 
     with tab4:
     
