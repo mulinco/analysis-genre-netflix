@@ -48,7 +48,7 @@ pip install -r requirements.txt
 # Execute o dashboard
 streamlit run app.py
 ```
-Ou então, acesse diretamente pelo link do [streamlit:](analysis-genre-netflix.streamlit.app)
+Ou então, acesse diretamente pelo link do [STREAMLIT](https://analysis-genre-netflix.streamlit.app/)
 
 ## 📚 Meu Processo de Aprendizado
 
