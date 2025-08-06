@@ -62,17 +62,17 @@ pip install -r requirements.txt
 
 # Execute o dashboard
 streamlit run app.py
-Ou então, acesse diretamente pelo link do Streamlit Cloud.
+```
+Ou então, acesse diretamente pelo link do [Streamlit Cloud](https://analysis-genre-netflix.streamlit.app/)
 
-Meu Processo de Aprendizado
-Habilidade Biológica	Equivalente em Dados	O Que Aprendi
-Análise de sequências	Processamento de texto	Padronizar e consolidar categorias de gêneros como faço com sequências de genes.
-Alinhamento múltiplo	Data cleaning	Identificar e tratar "mutações" (inconsistências) nos dados.
-Depuração de protocolos	Depuração de pipeline	Isolar a origem de um erro e garantir a integridade dos dados desde a fonte.
-Árvores filogenéticas	Clusterização	Agrupar gêneros que frequentemente aparecem juntos para entender suas relações.
+| Habilidade Biológica | Equivalente em Dados | O Que Aprendi |
+| :--- | :--- | :--- |
+| Análise de sequências | Processamento de texto | Padronizar e consolidar categorias de gêneros como faço com sequências de genes. |
+| Alinhamento múltiplo | Data cleaning | Identificar e tratar "mutações" (inconsistências) nos dados. |
+| Depuração de protocolos | Depuração de pipeline | Isolar a origem de um erro e garantir a integridade dos dados desde a fonte. |
+| Árvores filogenéticas | Clusterização | Agrupar gêneros que frequentemente aparecem juntos para entender suas relações. |
 
-Exportar para as Planilhas
-Como Você Pode Me Ajudar
+## Como Você Pode Me Ajudar
 Como uma profissional que une as áreas de Biologia e Ciência de Dados, adoraria:
 
 ✏️ Feedback sobre minha abordagem analítica
@@ -81,4 +81,4 @@ Como uma profissional que une as áreas de Biologia e Ciência de Dados, adorari
 
 🔗 Conexões com oportunidades em análise de dados, bioinformática e áreas correlatas.
 
-Vamos conversar! mariarodrigues.ufrj@gmail.com | Meu LinkedIn
+Vamos conversar! mariarodrigues.ufrj@gmail.com | [Meu LinkedIn](https://www.linkedin.com/in/mariaclararodrigues3113/)
