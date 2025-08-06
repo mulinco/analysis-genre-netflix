@@ -30,14 +30,57 @@ def load_data(file_path):
         print(f"\nERRO ao carregar dados: {str(e)}")
         return None
 
-def clean_genres(genres_str):
-    """Limpa e padroniza os gêneros"""
-    if pd.isna(genres_str):
+def clean_and_standardize_genres(genres_str):
+    """
+    Padroniza os gêneros, consolida subgêneros e remove inconsistências,
+    lidando com múltiplos separadores e combinações específicas.
+    """
+    if pd.isna(genres_str) or not isinstance(genres_str, str):
         return ''
-    genres = [g.strip() for g in str(genres_str).split(',')]
-    # Remove caracteres especiais e duplicados
-    cleaned = [re.sub(r'[^\w\s-]', '', g) for g in genres if g.strip()]
-    return ','.join(sorted(list(set(cleaned))))
+
+    # Dicionário de mapeamento para padronizar nomes de gêneros
+    genre_mapping = {
+        'action adventure': 'action',
+        'action-adventure': 'action',
+        'sci-fi fantasy': 'science fiction',
+        'war politics': 'war',
+        'film-noir': 'noir',
+        'tv movie': 'movie',
+        'sci-fi': 'science fiction',
+        'science-fiction': 'science fiction',
+        'sci fi': 'science fiction',
+        'reality-tv': 'reality',
+        'talk-show': 'talk show',
+        'game-show': 'game show',
+        'musical': 'music'
+    }
+
+    # 1. Limpa caracteres de lista e converte para minúsculas
+    processed_str = str(genres_str).lower().replace('[','').replace(']','').replace("'",'').replace('"','')
+    
+    # 2. Aplica mapeamentos de frases completas primeiro
+    for key, value in genre_mapping.items():
+        processed_str = processed_str.replace(key, value)
+
+    # 3. Divide a string em uma lista de gêneros usando múltiplos separadores
+    genres_list = re.split(r'[,/&;]', processed_str)
+    
+    # 4. Limpa espaços em branco e remove strings vazias, criando um conjunto para valores únicos
+    mapped_genres = {g.strip() for g in genres_list if g.strip()}
+
+    # 5. Lógica de consolidação para combinações específicas
+    # Se um filme é 'Action' e 'Adventure', consideramos apenas 'Action'.
+    if 'action' in mapped_genres and 'adventure' in mapped_genres:
+        mapped_genres.remove('adventure')
+    
+    # Se um filme é 'Science Fiction' e 'Fantasy', consideramos apenas 'Science Fiction'.
+    if 'science fiction' in mapped_genres and 'fantasy' in mapped_genres:
+        mapped_genres.remove('fantasy')
+
+    # 6. Retorna a string final, ordenada e com letras maiúsculas
+    if not mapped_genres:
+        return ''
+    return ','.join(sorted([g.title() for g in mapped_genres]))
 
 def preprocess_data(df):
     # Converter tipos
@@ -50,7 +93,7 @@ def preprocess_data(df):
     df['genres'] = df['genres'].fillna('Unknown')
     
    
-    df['genres'] = df['genres'].apply(clean_genres)
+    df['genres'] = df['genres'].apply(clean_and_standardize_genres)
     
     # Aplicar KNN para avaliações
     if df[['imdbAverageRating', 'imdbNumVotes']].isnull().any().any():
@@ -214,6 +257,10 @@ def main():
     
     # Pré-processamento
     df = preprocess_data(df)
+
+    # Guarda o DataFrame limpo, substituindo o ficheiro antigo
+    df.to_csv(DATA_PATH, index=False, encoding='utf-8-sig')
+    print(f"\nDados limpos e guardados com sucesso em: {DATA_PATH}")
     
     # Filtros padrão 
     my_filters = {
